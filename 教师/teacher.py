@@ -20,7 +20,9 @@ while True:
     # user记录所有的老师的账户信息  比如大院{'username': '张莹', 'userinfo': {'loginType': 'Android', 'phone': '18691098998', 'password': 'wyzy19851021'}}
     print("------------------*-----------------------",users)
 
-    with open('D:\\蘑菇丁日报.txt', 'w', encoding='utf-8') as f:
+    date = "D:\\蘑菇丁_{}_{}_{}日报.txt".format(datetime.datetime.now().year, datetime.datetime.now().month,datetime.datetime.now().day)
+
+    with open(date, 'w', encoding='utf-8') as f:
         pass
 
 
@@ -30,14 +32,14 @@ while True:
         # if t>23 or t<7:
         #     print('晚上上班')
         #     break
-        # t = 14
+        t = 14
         if t == 14 or t == 17:
             print('每天14点或者5点上班')
 
             print('*'*80)
             print("老师："+lo['username']+' 正在查看报表'+str(datetime.datetime.now()))
 
-            with open('D:\\蘑菇丁日报.txt', 'a', encoding='utf-8') as f:
+            with open(date, 'a', encoding='utf-8') as f:
                 f.write("\n\n----------------------------------------------------------------------")
                 f.write("\n\n老师：{}\n".format(lo['username']))
 
@@ -67,7 +69,7 @@ while True:
                             user_data_stu.remove(signed)
                 # print("-----未签到同学有:  {}位，分别是： {}",format(str(len(user_data_stu)),str(user_data_stu)))
 
-                with open('D:\\蘑菇丁日报.txt', 'a', encoding='utf-8') as f:
+                with open(date, 'a', encoding='utf-8') as f:
 
 
                     f.write("总人数:  {}\n".format(len(all_stu_li)))
@@ -85,7 +87,7 @@ while True:
                             print("班级：  ", a_s.get('className'))
                             print("电话：  ", a_s.get('mobile'))
                             print("-"*50)
-                            with open('D:\\蘑菇丁日报.txt', 'a', encoding='utf-8') as f:
+                            with open(date, 'a', encoding='utf-8') as f:
 
                                 f.write("\n未签到的同学有:  {}   班级: {}   电话：{}".format(user,a_s.get('className'),a_s.get('mobile')))
                                 # f.write("\n\n未签到的同学有:  {}".format(user))

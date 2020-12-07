@@ -5,7 +5,7 @@ import xlrd
 import mogu_function as mo
 import time
 
-users=[]
+
 #打开excel文件
 book = xlrd.open_workbook('account.xlsx')
 
@@ -24,46 +24,69 @@ li_week = [{"积极工作":"人生的确如此，不能让它来找你，是你�
 {"奥利给":"办法总比苦难多，加油吧打工人奥利给!!"}]
 
 while True:
+    users = []
+    # 获取teacher  sheet的数据
+    sheet = book.sheet_by_name('students')
 
-    user = {"phone": '18391622076', "password": "123456",
-            "loginType": "android"}
-    login_result = mo.Login(user)
+    print("行数",sheet.nrows)
+    for i in range(1, sheet.nrows):
+        c = {"username": sheet.row_values(i)[0],"phone":sheet.row_values(i)[1],"password":sheet.row_values(i)[2],"loginType":sheet.row_values(i)[3]}
+        users.append(c)
 
-    #如果登陆成功
-    if login_result["code"] == "200":
-        print('赵咪娟'+'['+str(datetime.datetime.now())+'] 登录成功')
+    print(users)
 
-    if login_result["code"] == "200":
-        token = login_result['token']
-        planId = mo.GetPlanID(token)
-        #获取planId
-        if planId != "erro":
-            #提交数据
-            result = mo.Day(token, planId,"9月4","今天是个好日子")
-            if result != "erro":
-                print("赵咪娟:日报撰写成功")
+    for user in users:
+        stu_dict = {"phone":user.get('phone'),
+                    "password":user.get("password"),
+                    'loginType':"android"}
 
-    if login_result["code"] == "200":
-        token = login_result['token']
-        planId = mo.GetPlanID(token)
-        #获取planId
-        if planId != "erro":
-            #提交数据
-            #随机列表中的数据  取一个字典
-            k = random.sample(li_week, 1)[0]
+    #
+    # user = {"phone": '17609104120', "password": "Hp654321",
+    #         "loginType": "android"}
+        try:
+            login_result = mo.Login(stu_dict)
 
-            result = mo.Week(token, planId,list(k.keys())[0],list(k.values())[0])
-            if result != "erro":
-                print("赵咪娟:周报撰写成功")
+            #如果登陆成功
+            if login_result["code"] == "200":
+                print(user.get("username")+'['+str(datetime.datetime.now())+'] 登录成功')
 
-    if login_result["code"] == "200":
-        token = login_result['token']
-        planId = mo.GetPlanID(token)
-        #获取planId
-        if planId != "erro":
-            #提交数据
-            result = mo.Month(token, planId,"9月4","这个月是个好日子")
-            if result != "erro":
-                print("赵咪娟:月报撰写成功")
+            if login_result["code"] == "200":
+                token = login_result['token']
+                planId = mo.GetPlanID(token)
+                # 获取planId
+                if planId != "erro":
+                    # 提交数据
+                    # 随机列表中的数据  取一个字典
+                    k = random.sample(li_week, 1)[0]
+
+                    result = mo.Week(token, planId, list(k.keys())[0], list(k.values())[0])
+                    if result != "erro":
+                        print("{}:周报撰写成功".format(user.get("username")))
+        except:
+            print("{}:账号出现问题".format(user.get("username")))
+    # 日报
+    # if login_result["code"] == "200":
+    #     token = login_result['token']
+    #     planId = mo.GetPlanID(token)
+    #     #获取planId
+    #     if planId != "erro":
+    #         #提交数据
+    #         result = mo.Day(token, planId,"9月4","今天是个好日子")
+    #         if result != "erro":
+    #             print("赵咪娟:日报撰写成功")
+
+    #周报
+
+
+    #月报
+    # if login_result["code"] == "200":
+    #     token = login_result['token']
+    #     planId = mo.GetPlanID(token)
+    #     #获取planId
+    #     if planId != "erro":
+    #         #提交数据
+    #         result = mo.Month(token, planId,"9月4","这个月是个好日子")
+    #         if result != "erro":
+    #             print("赵咪娟:月报撰写成功")
 
     break

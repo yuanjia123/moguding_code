@@ -9,32 +9,30 @@ users=[]
 book = xlrd.open_workbook('account.xlsx')
 
 while True:
+    #获取小时
+    h = datetime.datetime.now().hour
+    #获取分钟
+    m = datetime.datetime.now().minute
+    if h == 14 and m == 30:
+        print('每天14点30执行')
 
-    #获取teacher  sheet的数据
-    sheet = book.sheet_by_name('teacher')
-    # print("行数",sheet.nrows)
-    # sheet.nrows获取该sheet当中的有效行数
-    for i in range(1, sheet.nrows):
-        users.append({"username":sheet.row_values(i)[0],"userinfo":{"phone":str(int(sheet.row_values(i)[1])),"password":sheet.row_values(i)[2],"loginType":sheet.row_values(i)[3]}})
+        #获取teacher  sheet的数据
+        sheet = book.sheet_by_name('teacher')
 
-    # user记录所有的老师的账户信息  比如大院{'username': '张莹', 'userinfo': {'loginType': 'Android', 'phone': '18691098998', 'password': 'wyzy19851021'}}
-    print("------------------*-----------------------",users)
+        # sheet.nrows获取该sheet当中的有效行数
+        for i in range(1, sheet.nrows):
+            users.append({"username":sheet.row_values(i)[0],"userinfo":{"phone":str(int(sheet.row_values(i)[1])),"password":sheet.row_values(i)[2],"loginType":sheet.row_values(i)[3]}})
 
-    date = "D:\\蘑菇丁_{}_{}_{}日报.txt".format(datetime.datetime.now().year, datetime.datetime.now().month,datetime.datetime.now().day)
+        # user记录所有的老师的账户信息  比如大院{'username': '张莹', 'userinfo': {'loginType': 'Android', 'phone': '18691098998', 'password': 'wyzy19851021'}}
+        #print("------------------*-----------------------",users)
 
-    with open(date, 'w', encoding='utf-8') as f:
-        pass
+        date = "D:\\蘑菇丁_{}_{}_{}日报.txt".format(datetime.datetime.now().year, datetime.datetime.now().month,datetime.datetime.now().day)
+
+        with open(date, 'w', encoding='utf-8') as f:
+            pass
 
 
-    for lo in users:
-        t=datetime.datetime.now().hour
-        print("t是:",t)
-        # if t>23 or t<7:
-        #     print('晚上上班')
-        #     break
-        t = 14
-        if t == 14 or t == 17:
-            print('每天14点或者5点上班')
+        for lo in users:
 
             print('*'*80)
             print("老师："+lo['username']+' 正在查看报表'+str(datetime.datetime.now()))
@@ -124,5 +122,5 @@ while True:
                 print(lo['username']+":"+response['info'])
 
     users.clear()
-    print('每天执行2次')
-    time.sleep(3600)
+    print('每天执行1次，2点半执行')
+    time.sleep(60)
